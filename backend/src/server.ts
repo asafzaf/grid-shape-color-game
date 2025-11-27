@@ -2,8 +2,7 @@ import express from "express";
 import http from "http";
 import { Server as IOServer } from "socket.io";
 import Redis from "ioredis";
-import { GameState } from "shared";
-import { GameStateManager } from "./game";
+import GameSingleton from "./game/game.singleton";
 
 const PORT = process.env.BACKEND_PORT ? Number(process.env.BACKEND_PORT) : 3000;
 const app = express();
@@ -19,7 +18,7 @@ redis.on("connect", () => console.log("Connected to Redis"));
 
 const STATE_KEY = process.env.REDIS_STATE_KEY || "game_state";
 
-const game = GameStateManager.getInstance();
+const game = GameSingleton.getInstance();
 
 io.on("connection", (socket) => {
   console.log("Player connected:", socket.id);
@@ -27,7 +26,7 @@ io.on("connection", (socket) => {
   socket.emit("state_snapshot", game.getState());
 
   socket.on("action", ({ cellIndex }) => {
-    game.handleClick(cellIndex);
+    game.clickCell(cellIndex);
     io.emit("state_snapshot", game.getState());
     socket.emit("action_ack", { ok: !game.getState().isGameOver });
   });
