@@ -1,38 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { GameState, Cell } from "shared";
+import { GameState, Cell as CellType } from "shared";
 import { GameOver } from "../GameOver/GameOver";
-import styles from "./Board.module.css"; 
+import Cell from "../Cell/Cell";
+import styles from "./Board.module.css";
 
-const BACKEND_URL = "http://localhost:3000";
+type Props = {
+  state: GameState;
+  onCellClick: (index: number) => void;
+};
 
-const Board: React.FC = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [state, setState] = useState<GameState | null>(null);
+const Board: React.FC<Props> = ({ state, onCellClick }) => {
 
-  useEffect(() => {
-    const s = io(BACKEND_URL);
-    setSocket(s);
-
-    s.emit("join");
-
-    s.on("state_snapshot", (gameState: GameState) => {
-      setState(gameState);
-    });
-
-    s.on("state_patch", (patch: Partial<GameState>) => {
-      setState((prev) => ({ ...prev!, ...patch }));
-    });
-
-    return () => {
-      s.disconnect();
-    };
-  }, []);
-
-  const handleClick = (index: number) => {
-    if (!socket) return;
-    socket.emit("action", { cellIndex: index });
-  };
 
   if (!state) return <div>Loading...</div>;
 
@@ -46,31 +25,9 @@ const Board: React.FC = () => {
         gridTemplateColumns: `repeat(${cols}, 80px)`,
       }}
     >
-      {board.map((cell: Cell, idx: number) => (
-        <button
-          key={idx}
-          style={{
-            width: 80,
-            height: 80,
-            backgroundColor: cell.color,
-            cursor: cell.cooldown > 0 ? "not-allowed" : "pointer",
-            opacity: cell.cooldown > 0 ? 0.5 : 1,
-          }}
-          onClick={() => handleClick(idx)}
-          disabled={cell.cooldown > 0}
-        >
-          {cell.shape}
-          {cell.cooldown > 0 && <div>CD:{cell.cooldown}</div>}
-        </button>
+      {board.map((cell: CellType, idx: number) => (
+        <Cell key={idx} cell={cell} index={idx} onClick={() => onCellClick(idx)} />
       ))}
-      {state.isGameOver && (
-        <GameOver
-          score={state.score}
-          onRestart={() => {
-            window.location.reload();
-          }}
-        />
-      )}
     </div>
   );
 };
