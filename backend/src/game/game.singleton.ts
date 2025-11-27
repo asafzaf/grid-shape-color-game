@@ -12,6 +12,7 @@ class GameSingleton {
 
   static resetGame() {
     GameSingleton.instance = new Game(3, 6);
+    return GameSingleton.instance;
   }
 }
 
