@@ -1,12 +1,6 @@
 version: "3.9"
 
 services:
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-
   backend:
     build:
       context: .
@@ -14,11 +8,6 @@ services:
     container_name: backend
     ports:
       - "${BACKEND_PORT:-3000}:3000"
-    environment:
-      - REDIS_HOST=${REDIS_HOST:-redis}
-      - REDIS_PORT=${REDIS_PORT:-6379}
-    depends_on:
-      - redis
 
   frontend:
     build:
