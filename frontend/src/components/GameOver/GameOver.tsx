@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./GameOver.module.css";
 
 interface GameOverProps {
   score: number;
@@ -7,8 +8,8 @@ interface GameOverProps {
 
 export const GameOver: React.FC<GameOverProps> = ({ score, onRestart }) => {
   return (
-    <div className="game-over-overlay">
-      <div className="game-over-box">
+    <div className={styles.gameOverOverlay}>
+      <div className={styles.gameOverBox}>
         <h1>Game Over</h1>
         <p>Your Score: {score}</p>
         <button onClick={onRestart}>Restart Game</button>

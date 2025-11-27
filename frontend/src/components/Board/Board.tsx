@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { GameState, Cell } from "shared";
-import { GameOver } from "./GameOver";
+import { GameOver } from "../GameOver/GameOver";
+import styles from "./Board.module.css"; 
 
 const BACKEND_URL = "http://localhost:3000";
 
@@ -39,10 +40,10 @@ const Board: React.FC = () => {
 
   return (
     <div
+      className={styles.board}
       style={{
-        display: "grid",
+        gridTemplateRows: `repeat(${rows}, 80px)`,
         gridTemplateColumns: `repeat(${cols}, 80px)`,
-        gap: "5px",
       }}
     >
       {board.map((cell: Cell, idx: number) => (
@@ -66,7 +67,7 @@ const Board: React.FC = () => {
         <GameOver
           score={state.score}
           onRestart={() => {
-            window.location.reload(); // simple restart
+            window.location.reload();
           }}
         />
       )}

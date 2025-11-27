@@ -1,0 +1,20 @@
+.board {
+  display: grid;
+  gap: 5px;
+  background: #222;
+  padding: 10px;
+  border-radius: 12px;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, 80px);
+}
+
+.cell-row {
+  display: flex;
+}
+
+.score {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+}
