@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { GameState, Cell } from "shared";
+import { GameOver } from "./GameOver";
 
 const BACKEND_URL = "http://localhost:3000";
 
@@ -61,6 +62,14 @@ const Board: React.FC = () => {
           {cell.cooldown > 0 && <div>CD:{cell.cooldown}</div>}
         </button>
       ))}
+      {state.isGameOver && (
+        <GameOver
+          score={state.score}
+          onRestart={() => {
+            window.location.reload(); // simple restart
+          }}
+        />
+      )}
     </div>
   );
 };
