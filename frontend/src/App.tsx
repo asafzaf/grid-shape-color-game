@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { GameState } from "shared";
 import Board from "./components/Board/Board";
 import { GameOver } from "./components/GameOver/GameOver";
+import styles from "./App.module.css";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
@@ -39,13 +40,21 @@ function App() {
     socket.emit("restart");
   }
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Grid Shape Color Game</h1>
-      <Board state={state!} onCellClick={handleClick} />
-      {state?.isGameOver && (
-        <GameOver score={state?.score || 0} onRestart={handleRestart} />
-      )}
-      <h3>Score: {state?.score || 0}</h3>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>Grid Shape Color Game</h1>
+        <div className={styles.content}>
+          <Board state={state!} onCellClick={handleClick} />
+
+          {state?.isGameOver && (
+            <GameOver score={state?.score || 0} onRestart={handleRestart} />
+          )}
+
+          <div className={styles.scoreWrap}>
+            <h3 className={styles.score}>Score: {state?.score || 0}</h3>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

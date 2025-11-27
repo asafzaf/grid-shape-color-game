@@ -4,42 +4,86 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(4,10,18,0.55);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
+  backdrop-filter: blur(6px) saturate(110%);
+  -webkit-backdrop-filter: blur(6px) saturate(110%);
 }
 
 .gameOverBox {
-  background: #fff;
-  padding: 2rem 3rem;
+  background: linear-gradient(180deg, #ffffff, #f3f7fb);
+  padding: 1.6rem 2rem;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 0 15px #000;
+  box-shadow: 0 30px 80px rgba(2,6,23,0.6);
+  border: 1px solid rgba(2,6,23,0.06);
+  width: min(92vw, 480px);
+  max-width: 92vw;
+  transform-origin: center;
+  animation: popIn 220ms cubic-bezier(.2,.9,.25,1);
 }
 
 .gameOverBox h1 {
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  color: #071022;
+  margin-bottom: 0.6rem;
+  font-size: 1.6rem;
 }
 
 .gameOverBox p {
-  margin-bottom: 1.5rem;
-  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #2b3b48;
+}
+
+.gameOverBox .actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
 }
 
 .gameOverBox button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.2rem;
   font-size: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  background: #007bff;
-  color: #fff;
-  transition: background 0.2s;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  box-shadow: 0 8px 20px rgba(3,54,102,0.18);
 }
 
 .gameOverBox button:hover {
-  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.gameOverBox button:active {
+  transform: translateY(0);
+}
+
+.gameOverBox button.primary {
+  background: linear-gradient(180deg,#007bff,#0056b3);
+}
+
+.gameOverBox button.ghost {
+  background: transparent;
+  color: #073047;
+  border: 1px solid rgba(7,48,71,0.08);
+  box-shadow: none;
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.96); }
+  60% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 480px) {
+  .gameOverBox { padding: 1.2rem 1rem; }
+  .gameOverBox h1 { font-size: 1.4rem; }
+  .gameOverBox p { font-size: 0.95rem; }
+  .gameOverBox .actions { gap: 8px; flex-direction: column; }
 }
